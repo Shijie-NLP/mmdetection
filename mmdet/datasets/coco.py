@@ -68,7 +68,6 @@ class CocoDataset(BaseDetDataset):
         """  # noqa: E501
         with get_local_path(self.ann_file, backend_args=self.backend_args) as local_path:
             self.coco = self.COCOAPI(local_path)
-
         # The order of returned `cat_ids` will not
         # change with the order of the `classes`
         self.cat_ids = self.coco.get_cat_ids(cat_names=self.metainfo["classes"])
@@ -88,7 +87,6 @@ class CocoDataset(BaseDetDataset):
 
             parsed_data_info = self.parse_data_info({"raw_ann_info": raw_ann_info, "raw_img_info": raw_img_info})
             data_list.append(parsed_data_info)
-
         if self.ANN_ID_UNIQUE:
             assert len(set(total_ann_ids)) == len(total_ann_ids), (
                 f"Annotation ids in '{self.ann_file}' are not unique!"
@@ -114,13 +112,12 @@ class CocoDataset(BaseDetDataset):
 
         # TODO: need to change data_prefix['img'] to data_prefix['img_path']
         img_path = osp.join(self.data_prefix["img"], img_info["file_name"])
-
-        seg_map_path = None
         if self.data_prefix.get("seg", None):
             seg_map_path = osp.join(
                 self.data_prefix["seg"], img_info["file_name"].rsplit(".", 1)[0] + self.seg_map_suffix
             )
-
+        else:
+            seg_map_path = None
         data_info["img_path"] = img_path
         data_info["img_id"] = img_info["img_id"]
         data_info["seg_map_path"] = seg_map_path

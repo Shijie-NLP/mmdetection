@@ -12,7 +12,6 @@ from mmengine.structures import InstanceData, PixelData
 # Type hint of config data
 ConfigType = Union[ConfigDict, dict]
 OptConfigType = Optional[ConfigType]
-
 # Type hint of one or more config data
 MultiConfig = Union[ConfigType, list[ConfigType]]
 OptMultiConfig = Optional[MultiConfig]

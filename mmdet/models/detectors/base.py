@@ -2,16 +2,17 @@
 from abc import ABCMeta, abstractmethod
 from typing import Union
 
-from mmdet.structures import DetDataSample, OptSampleList, SampleList
+import torch
 from mmengine.model import BaseModel
 from torch import Tensor
 
+from mmdet.structures import DetDataSample, OptSampleList, SampleList
 from mmdet.utils import InstanceList, OptConfigType, OptMultiConfig
 
 from ..utils import samplelist_boxtype2tensor
 
 
-ForwardResults = Union[dict[str, Tensor], list[DetDataSample], tuple[Tensor], Tensor]
+ForwardResults = Union[dict[str, torch.Tensor], list[DetDataSample], tuple[torch.Tensor], torch.Tensor]
 
 
 class BaseDetector(BaseModel, metaclass=ABCMeta):
@@ -31,7 +32,7 @@ class BaseDetector(BaseModel, metaclass=ABCMeta):
     @property
     def with_neck(self) -> bool:
         """bool: whether the detector has a neck"""
-        return getattr(self, "neck", None) is not None
+        return hasattr(self, "neck") and self.neck is not None
 
     # TODO: these properties need to be carefully handled
     # for both single stage & two stage detectors
@@ -43,14 +44,20 @@ class BaseDetector(BaseModel, metaclass=ABCMeta):
     @property
     def with_bbox(self) -> bool:
         """bool: whether the detector has a bbox head"""
-        return (hasattr(self, "roi_head") and self.roi_head.with_bbox) or getattr(self, "bbox_head", None) is not None
+        return (hasattr(self, "roi_head") and self.roi_head.with_bbox) or (
+            hasattr(self, "bbox_head") and self.bbox_head is not None
+        )
 
     @property
     def with_mask(self) -> bool:
         """bool: whether the detector has a mask head"""
-        return (hasattr(self, "roi_head") and self.roi_head.with_mask) or getattr(self, "mask_head", None) is not None
+        return (hasattr(self, "roi_head") and self.roi_head.with_mask) or (
+            hasattr(self, "mask_head") and self.mask_head is not None
+        )
 
-    def forward(self, inputs: Tensor, data_samples: OptSampleList = None, mode: str = "tensor") -> ForwardResults:
+    def forward(
+        self, inputs: torch.Tensor, data_samples: OptSampleList = None, mode: str = "tensor"
+    ) -> ForwardResults:
         """The unified entry for a forward process in both training and test.
 
         The method should accept three modes: "tensor", "predict" and "loss":
