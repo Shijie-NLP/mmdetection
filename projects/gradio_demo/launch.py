@@ -53,7 +53,6 @@ class ObjectDetectionTab:
                     choices=self.model_list,
                     value=self.model_list[0],
                 )
-            with gr.Column():
                 image_input = gr.Image(
                     label="Image",
                     sources="upload",
@@ -61,6 +60,8 @@ class ObjectDetectionTab:
                     type="filepath",
                     interactive=True,
                 )
+
+            with gr.Column():
                 output = gr.Image(
                     label="Result",
                     sources="upload",
@@ -79,7 +80,7 @@ class ObjectDetectionTab:
 
         with gr.Row():
             example_images = gr.Dataset(components=[image_input], samples=[["demo/demo.jpg"]])
-            example_images.click(fn=lambda x: gr.Image.update(value=x[0]), inputs=example_images, outputs=image_input)
+            example_images.click(fn=lambda x: gr.Image(value=x[0]), inputs=example_images, outputs=image_input)
 
     def inference(self, model, image):
         det_inferencer = DetInferencer(model, scope="mmdet", device=get_free_device())
@@ -112,7 +113,6 @@ class OpenVocabObjectDetectionTab:
                     choices=self.model_list,
                     value=self.model_list[0],
                 )
-            with gr.Column():
                 image_input = gr.Image(
                     label="Image",
                     sources="upload",
@@ -125,6 +125,8 @@ class OpenVocabObjectDetectionTab:
                     elem_classes="input_text",
                     interactive=True,
                 )
+
+            with gr.Column():
                 output = gr.Image(
                     label="Result",
                     sources="upload",
@@ -148,7 +150,7 @@ class OpenVocabObjectDetectionTab:
             example_images.click(fn=self.update, inputs=example_images, outputs=[image_input, text_input])
 
     def update(self, example):
-        return gr.Image.update(value=example[0]), gr.Textbox.update(value=example[1])
+        return gr.Image(value=example[0]), gr.Textbox(value=example[1])
 
     def inference(self, model, image, text):
         det_inferencer = DetInferencer(model, scope="mmdet", device=get_free_device())
@@ -172,7 +174,6 @@ class GroundingDetectionTab(OpenVocabObjectDetectionTab):
                     choices=self.model_list,
                     value=self.model_list[0],
                 )
-            with gr.Column():
                 image_input = gr.Image(
                     label="Image",
                     sources="upload",
@@ -185,6 +186,8 @@ class GroundingDetectionTab(OpenVocabObjectDetectionTab):
                     elem_classes="input_text",
                     interactive=True,
                 )
+
+            with gr.Column():
                 output = gr.Image(
                     label="Result",
                     sources="upload",
@@ -253,7 +256,6 @@ class OpenVocabPanopticSegTab(OpenVocabObjectDetectionTab):
                     choices=self.model_list,
                     value=self.model_list[0],
                 )
-            with gr.Column():
                 image_input = gr.Image(
                     label="Image",
                     sources="upload",
@@ -271,6 +273,8 @@ class OpenVocabPanopticSegTab(OpenVocabObjectDetectionTab):
                     elem_classes="input_text_stuff",
                     interactive=True,
                 )
+
+            with gr.Column():
                 output = gr.Image(
                     label="Result",
                     sources="upload",
@@ -297,9 +301,9 @@ class OpenVocabPanopticSegTab(OpenVocabObjectDetectionTab):
 
     def update(self, example):
         return (
-            gr.Image.update(value=example[0]),
-            gr.Textbox.update(label="thing text prompt", value=example[1]),
-            gr.Textbox.update(label="stuff text prompt", value=example[2]),
+            gr.Image(value=example[0]),
+            gr.Textbox(label="thing text prompt", value=example[1]),
+            gr.Textbox(label="stuff text prompt", value=example[2]),
         )
 
     def inference(self, model, image, text, stuff_text):
@@ -354,13 +358,14 @@ class ImageCaptionTab:
                     choices=self.model_list,
                     value=self.model_list[0],
                 )
-            with gr.Column():
                 image_input = gr.Image(
                     label="Input",
                     sources="upload",
                     elem_classes="input_image",
                     interactive=True,
                 )
+
+            with gr.Column():
                 caption_output = gr.Textbox(
                     label="Result",
                     lines=2,
@@ -379,7 +384,7 @@ class ImageCaptionTab:
 
         with gr.Row():
             example_images = gr.Dataset(components=[image_input], samples=[["demo/demo.jpg"]])
-            example_images.click(fn=lambda x: gr.Image.update(value=x[0]), inputs=example_images, outputs=image_input)
+            example_images.click(fn=lambda x: gr.Image(value=x[0]), inputs=example_images, outputs=image_input)
 
     def inference(self, model, image):
         ic_inferencer = ImageCaptionInferencer(**self.model_info[model], scope="mmdet", device=get_free_device())
@@ -407,7 +412,6 @@ class ReferImageCaptionTab(OpenVocabInstanceSegTab):
                     choices=self.model_list,
                     value=self.model_list[0],
                 )
-            with gr.Column():
                 image_input = gr.Image(
                     label="Input",
                     sources="upload",
@@ -420,6 +424,8 @@ class ReferImageCaptionTab(OpenVocabInstanceSegTab):
                     elem_classes="input_text",
                     interactive=True,
                 )
+
+            with gr.Column():
                 output = gr.Image(
                     label="Result",
                     sources="upload",
@@ -441,7 +447,7 @@ class ReferImageCaptionTab(OpenVocabInstanceSegTab):
             example_images.click(fn=self.update, inputs=example_images, outputs=[image_input, text_input])
 
     def update(self, example):
-        return gr.Image.update(value=example[0]), gr.Textbox.update(value=example[1])
+        return gr.Image(value=example[0]), gr.Textbox(value=example[1])
 
     def inference(self, model, image, text):
         ric_inferencer = RefImageCaptionInferencer(**self.model_info[model], scope="mmdet", device=get_free_device())
@@ -473,13 +479,14 @@ class TextToImageRetrievalTab:
                     choices=self.model_list,
                     value=self.model_list[0],
                 )
-            with gr.Column():
                 prototype = gr.File(file_count="multiple", file_types=["image"])
                 text_input = gr.Textbox(
                     label="Query",
                     elem_classes="input_text",
                     interactive=True,
                 )
+
+            with gr.Column():
                 retri_output = gr.Image(
                     label="Result",
                     sources="upload",
