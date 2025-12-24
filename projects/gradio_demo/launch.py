@@ -37,7 +37,7 @@ class ObjectDetectionTab:
     model_list = [
         "retinanet_r50-caffe_fpn_1x_coco",
         "faster-rcnn_r50-caffe_fpn_1x_coco",
-        "dino-5scale_swin-l_8xb2-12e_coco.py",
+        "dino-5scale_swin-l_8xb2-12e_coco",
     ]
 
     def __init__(self) -> None:
