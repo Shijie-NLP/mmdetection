@@ -52,6 +52,7 @@ class ObjectDetectionTab:
                     elem_classes="select_model",
                     choices=self.model_list,
                     value=self.model_list[0],
+                    allow_custom_value=True,
                 )
                 image_input = gr.Image(
                     label="Image",
@@ -112,6 +113,7 @@ class OpenVocabObjectDetectionTab:
                     elem_classes="select_model",
                     choices=self.model_list,
                     value=self.model_list[0],
+                    allow_custom_value=True,
                 )
                 image_input = gr.Image(
                     label="Image",
@@ -173,6 +175,7 @@ class GroundingDetectionTab(OpenVocabObjectDetectionTab):
                     elem_classes="select_model",
                     choices=self.model_list,
                     value=self.model_list[0],
+                    allow_custom_value=True,
                 )
                 image_input = gr.Image(
                     label="Image",
@@ -255,6 +258,7 @@ class OpenVocabPanopticSegTab(OpenVocabObjectDetectionTab):
                     elem_classes="select_model",
                     choices=self.model_list,
                     value=self.model_list[0],
+                    allow_custom_value=True,
                 )
                 image_input = gr.Image(
                     label="Image",
@@ -357,6 +361,7 @@ class ImageCaptionTab:
                     elem_classes="select_model",
                     choices=self.model_list,
                     value=self.model_list[0],
+                    allow_custom_value=True,
                 )
                 image_input = gr.Image(
                     label="Input",
@@ -411,6 +416,7 @@ class ReferImageCaptionTab(OpenVocabInstanceSegTab):
                     elem_classes="select_model",
                     choices=self.model_list,
                     value=self.model_list[0],
+                    allow_custom_value=True,
                 )
                 image_input = gr.Image(
                     label="Input",
@@ -478,6 +484,7 @@ class TextToImageRetrievalTab:
                     elem_classes="select_model",
                     choices=self.model_list,
                     value=self.model_list[0],
+                    allow_custom_value=True,
                 )
                 prototype = gr.File(file_count="multiple", file_types=["image"])
                 text_input = gr.Textbox(
